@@ -79,21 +79,17 @@ class RequestViewActivity : AppCompatActivity() {
     fun setReqAccept(){
         val updateModel = UpdateReqModel(requestId,"status","accepted")
         ResponseBodyApi.updateRequest(baseContext,updateModel, onResponse = {res->
-            Toast.makeText(baseContext,"res> "+res,Toast.LENGTH_SHORT).show()
+            val updateModel1 = UpdateReqModel(requestId,"expertId","expert@gmail.com")
+            ResponseBodyApi.updateRequest(baseContext,updateModel1, onResponse = {res->
+                Toast.makeText(baseContext,"Accepted",Toast.LENGTH_SHORT).show()
+            }, onFailure = {t->
+                Toast.makeText(baseContext,"error"+t.message,Toast.LENGTH_SHORT).show()
+                Log.d("error",t.message.toString())
+            })
         }, onFailure = {t->
-            Toast.makeText(baseContext,"error>:"+t.message,Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext,"error"+t.message,Toast.LENGTH_SHORT).show()
             Log.d("error",t.message.toString())
         })
-
-//        val update2Model = UpdateReqModel("rohit@gmail.com1700581767239","expertId","")
-//        ResponseBodyApi.updateRequest(baseContext,updateModel, onResponse = {res->
-//            Toast.makeText(baseContext,"res> "+res,Toast.LENGTH_SHORT).show()
-//        }, onFailure = {t->
-//            Toast.makeText(baseContext,"error:"+t.message,Toast.LENGTH_SHORT).show()
-//            Log.d("error",t.message.toString())
-//        })
-
-
     }
 
 

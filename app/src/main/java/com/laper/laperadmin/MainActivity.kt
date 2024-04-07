@@ -102,7 +102,38 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun fetchAvailableClient() {
+        val arr = ArrayList<String>()
+        arr.add("python")
+        arr.add("java")
+        var expertId = "expert@gmail.com"
 
+        val filter = FilterModel("expertId", expertId, "requestTime", lim = 6)
+        ResponseBodyApi.fetchRequest(filter, onResponse = { res ->
+            val req = res?.request
+            if (req != null) {
+                for (model in req) {
+                    if(!clientIds.contains(model.requestId)){
+                        if(model.status.equals("accepted")){
+                            avaClientModel.add(
+                                AvailableClientModel(
+                                    model.requestTime.toLong(),
+                                    expertId,
+                                    model.requestId,
+                                    "",
+                                    "",
+                                    model.problemStatement,
+                                    ArrayList(),
+                                    model.clientId)
+                            )
+                        }
+                        clientIds.add(model.requestId)
+                    }
+                }
+                avaClientAdapter.notifyDataSetChanged()
+            }
+        }, onFailure = { t ->
+            Toast.makeText(baseContext, t.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
 
@@ -117,16 +148,18 @@ class MainActivity : AppCompatActivity() {
             val req = res?.request
             if (req != null) {
                 for (model in req) {
-                    expertReqReceivedModel.add(
-                        NewRequestSentModel(
-                            model._id,
-                            model.requestTime,
-                            model.expertId,
-                            model.requestId,
-                            model.problemStatement,
-                            arr
+                    if(model.status.equals("active")){
+                        expertReqReceivedModel.add(
+                            NewRequestSentModel(
+                                model._id,
+                                model.requestTime,
+                                model.expertId,
+                                model.requestId,
+                                model.problemStatement,
+                                arr
+                            )
                         )
-                    )
+                    }
                 }
                 expertReqReceivedAdapter.notifyDataSetChanged()
             }
@@ -142,21 +175,23 @@ class MainActivity : AppCompatActivity() {
         arr.add("python")
         arr.add("java")
 
-        val filter = FilterModel("expertId", "rohit@gmail.com", "requestTime", lim = 6)
+        val filter = FilterModel("expertId", "expert@gmail.com", "requestTime", lim = 6)
         ResponseBodyApi.fetchRequest(filter, onResponse = { res ->
             val req = res?.request
             if (req != null) {
                 for (model in req) {
-                    expertReqReceivedModel.add(
-                        NewRequestSentModel(
-                            model._id,
-                            model.requestTime,
-                            model.expertId,
-                            model.requestId,
-                            model.problemStatement,
-                            arr
+                    if(model.status.equals("active")){
+                        expertReqReceivedModel.add(
+                            NewRequestSentModel(
+                                model._id,
+                                model.requestTime,
+                                model.expertId,
+                                model.requestId,
+                                model.problemStatement,
+                                arr
+                            )
                         )
-                    )
+                    }
                 }
                 expertReqReceivedAdapter.notifyDataSetChanged()
             }

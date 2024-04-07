@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -31,7 +32,7 @@ class AcceptedRequestActivity : AppCompatActivity() {
     var expertRef = db.collection("experts")
     var techRef = db.collection("tech")
 
-    private lateinit var acceptBtn: CardView
+    private lateinit var acceptBtn: LinearLayout
     private lateinit var taskCompleted:CardView
     private lateinit var userImage: CircleImageView
     private lateinit var userName: TextView
@@ -71,6 +72,12 @@ class AcceptedRequestActivity : AppCompatActivity() {
 
         taskCompleted.setOnClickListener {
             builder.show()
+        }
+
+        acceptBtn.setOnClickListener {
+            val intent = Intent(baseContext, ChatActivity::class.java)
+            intent.putExtra("userId","user")
+            startActivity(intent)
         }
 
         fetchDetails()

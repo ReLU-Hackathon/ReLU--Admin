@@ -32,7 +32,7 @@ class ChatAdapter(private val mList: List<ChatModel>, private val receiverUserId
         val currentDate = timeAgo.getTimeAgo(Date(model.date),context)
 
 
-        if (model.reciverId.trim().equals(auth.uid.toString())) {
+        if (model.reciverId.trim().equals("user")) {
             // RECEIVER USER
             holder.recLinear.visibility = View.VISIBLE
             holder.recText.text = model.text
@@ -46,9 +46,9 @@ class ChatAdapter(private val mList: List<ChatModel>, private val receiverUserId
             holder.sendDate.text = currentDate
 
             holder.recLinear.visibility = View.GONE
-            if (!model.read){
-                holder.notSent.visibility = View.VISIBLE
-            }
+//            if (!model.read){
+//                holder.notSent.visibility = View.VISIBLE
+//            }
         }
 
     }

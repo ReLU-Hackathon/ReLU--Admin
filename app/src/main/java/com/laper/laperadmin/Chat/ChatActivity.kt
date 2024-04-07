@@ -41,6 +41,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var msgEdit: EditText
     private lateinit var sendBtn: ImageView
     private lateinit var receiverUserId: String
+    private lateinit var senderUserId: String
     private lateinit var userImage: CircleImageView
     private lateinit var userName: TextView
     private lateinit var appBar: AppBarLayout
@@ -63,6 +64,7 @@ class ChatActivity : AppCompatActivity() {
         chatModel = ArrayList()
 
         receiverUserId = intent.getStringExtra("userId").toString()
+        senderUserId = "expert"
         chatAdapter = ChatAdapter(chatModel, receiverUserId)
         chatRecyclerView.adapter = chatAdapter
         chatAdapter.notifyDataSetChanged()
@@ -101,7 +103,7 @@ class ChatActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun fetchMessages() {
-        chatRef.child(auth.uid.toString())
+        chatRef.child(senderUserId)
             .child(receiverUserId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -145,7 +147,7 @@ class ChatActivity : AppCompatActivity() {
             "type" to 0,
             "read" to false
         )
-        chatRef.child(auth.uid.toString())
+        chatRef.child(senderUserId)
             .child(receiverUserId)
             .child(childId).setValue(senderHashMap)
 
@@ -157,7 +159,7 @@ class ChatActivity : AppCompatActivity() {
             "read" to false
         )
         chatRef.child(receiverUserId)
-            .child(auth.uid.toString())
+            .child(senderUserId)
             .child(childId).setValue(receiverHashMap)
 
         msgEdit.setText("")
@@ -166,12 +168,12 @@ class ChatActivity : AppCompatActivity() {
             "lastMessage" to msg
         )
 
-        userChatListRef.child(auth.uid.toString())
+        userChatListRef.child(senderUserId)
             .child(receiverUserId)
             .setValue(userHash)
 
         userChatListRef.child(receiverUserId)
-            .child(auth.uid.toString())
+            .child(senderUserId)
             .setValue(userHash)
 
         chatRecyclerView.layoutManager?.scrollToPosition(chatAdapter.itemCount - 1)
