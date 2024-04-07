@@ -33,13 +33,6 @@ class ChatAdapter(private val mList: List<ChatModel>, private val receiverUserId
 
 
         if (model.reciverId.trim().equals("user")) {
-            // RECEIVER USER
-            holder.recLinear.visibility = View.VISIBLE
-            holder.recText.text = model.text
-            holder.recDate.text = currentDate
-
-            holder.sendLinear.visibility = View.GONE
-        } else {
             // SENDER USER
             holder.sendLinear.visibility = View.VISIBLE
             holder.sendText.text = model.text
@@ -49,6 +42,13 @@ class ChatAdapter(private val mList: List<ChatModel>, private val receiverUserId
 //            if (!model.read){
 //                holder.notSent.visibility = View.VISIBLE
 //            }
+        } else {
+            // RECEIVER USER
+            holder.recLinear.visibility = View.VISIBLE
+            holder.recText.text = model.text
+            holder.recDate.text = currentDate
+
+            holder.sendLinear.visibility = View.GONE
         }
 
     }
